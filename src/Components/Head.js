@@ -2,6 +2,7 @@ import React from 'react'
 import { useDispatch } from 'react-redux';
 import {toogleMenu} from '../utils/appSlices';
 
+
 const Head = () => {
    const dispatch = useDispatch();
   const toggleMenuHandler = () => {
@@ -11,16 +12,18 @@ const Head = () => {
     <div className="grid grid-flow-col p-5 m-2 shadow-lg">
       <div className="flex col-span-1">
         <img
-          onClick={()=>toggleMenuHandler()}
+          onClick={() => toggleMenuHandler()}
           className="h-8"
           alt="menu"
           src="https://cdn4.iconfinder.com/data/icons/wirecons-free-vector-icons/32/menu-alt-512.png"
         />
-        <img
-          className="h-9 mx-3"
-          alt="logo"
-          src="https://t3.ftcdn.net/jpg/05/07/46/84/360_F_507468479_HfrpT7CIoYTBZSGRQi7RcWgo98wo3vb7.jpg"
-        />
+      
+          <img
+            className="h-9 mx-3"
+            alt="logo"
+            src="https://t3.ftcdn.net/jpg/05/07/46/84/360_F_507468479_HfrpT7CIoYTBZSGRQi7RcWgo98wo3vb7.jpg"
+          />
+
       </div>
       <div className="col-span-10 px-10">
         <input

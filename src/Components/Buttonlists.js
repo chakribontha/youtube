@@ -24,8 +24,8 @@ const list = [
 const Buttonlists = () => {
   return (
     <div className="flex w-screen overflow-x-auto whitespace-nowrap border border-b-black overflow-hidden">
-      {list.map((item) => (
-        <Button key={item} name={item} />
+      {list.map((item, index) => (
+        <Button key={index} name={item} />
       ))}
     </div>
   );

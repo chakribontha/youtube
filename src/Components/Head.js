@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {toogleMenu} from '../utils/appSlices';
 import { YOUTUBE_SEARCH_API } from '../utils/constants';
+import { cacheResult } from '../utils/searchSlices';
+
 
 
 const Head = () => {
@@ -9,19 +11,31 @@ const Head = () => {
 
   const [suggestions, setSuggestions] = useState([]);
 
+  const [showSuggestions, setShowSuggestions] = useState(false);
+
+  const searchChache = useSelector((store) => store.search);
+
+
   useEffect(() => {
-         //Api call to search
+    //Api call to search
     //make api call after ever key press
     //but if the difference between 2 API calls is less than <200sec
     //decline the call
-   const timer= setTimeout(
-      () => getSearchSuggestions()
-      , 200)
+    const timer = setTimeout(
+      () => {
+        if (searchChache[searchQuery]) {
+          setSuggestions(searchChache[searchQuery]);
+        } else {
+          getSearchSuggestions();
+        }
+        
+      }, 200)
     
-    return () => {
-    clearTimeout(timer);  
+     return () => {
+      clearTimeout(timer);  
     }
 
+  
   }, [searchQuery])
   
   const getSearchSuggestions =async() => {
@@ -29,6 +43,9 @@ const Head = () => {
     const json = await data.json();
     // console.log(json[1]);
     setSuggestions(json[1]);
+    dispatch(cacheResult({
+      [searchQuery]:json[1],
+    }))
   }
 
   const dispatch = useDispatch();
@@ -61,20 +78,28 @@ const Head = () => {
             onChange={(e) => {
               setSearchQuery(e.target.value);
             }}
+            onFocus={() => {
+              setShowSuggestions(true);
+            }}
+            onBlur={() => {
+              setShowSuggestions(false);
+            }}
           />
           <button className="border border-gray-500 px-5 py-2 rounded-r-full bg-gray-100">
             🔍
           </button>
         </div>
-        <div className="fixed bg-white py-2 px-2 w-[34rem] shadow-lg rounded-lg border border-gray-100">
-          <ul>
-            {suggestions.map((s,index) => (
-              <li key={index} className="py-2 px-3 shadow-sm hover:bg-gray-100">
-                🔍{s}
-              </li>
-            ))}
-          </ul>
-        </div>
+        {showSuggestions && (
+          <div className="fixed bg-white py-2 px-2 w-[34rem] shadow-lg rounded-lg border border-gray-100">
+            <ul>
+              {suggestions.map((s, index) => (
+                <li key={index} className="py-2 px-3 shadow-sm hover:bg-gray-100">
+                  🔍 {s}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
       <div className="col-span-1">
         <img

@@ -1,13 +1,14 @@
-import React from 'react'
-import Buttonlists from './Buttonlists'
-import VideoContainer from './VideoContainer'
+import React from "react";
+import Buttonlists from "./Buttonlists";
+import VideoContainer from "./VideoContainer";
+
 const MainContainer = () => {
   return (
-    <div>
-          <Buttonlists />
-          <VideoContainer/>
+    <div className="overflow-x-auto">
+      <Buttonlists />
+      <VideoContainer />
     </div>
-  )
-}
+  );
+};
 
-export default MainContainer
+export default MainContainer;
